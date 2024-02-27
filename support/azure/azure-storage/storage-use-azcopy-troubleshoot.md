@@ -26,11 +26,20 @@ If the exit code is any other non-zero exit code, it may be an exit code from th
 ## Error codes
 ### 400
 #### InvalidOperation
+Invalid operation against a blob snapshot. Snapshots are read-only. You can't modify them. If you want to modify a blob, you must use the base blob, not a snapshot.
 #### MissingRequiredQueryParameter
+A required query parameter was not specified for this request. 
+
 #### InvalidHeaderValue
+The value provided for one of the HTTP headers was not in the correct format. 
+
 ### 401 
 #### InvalidAuthenticationInfo
+The authentication information wasn't provided in the correct format. Verify the value of Authorization header. 
+
 #### NoAuthenticationInformation
+Server failed to authenticate the request. Please refer to the information in the www-authenticate header.
+
 ### 403
 It's common to encounter 403 errors. Sometimes they're benign and don't result in a failed transfer. For example, in AzCopy logs, you might see that a `HEAD` request received 403 errors. Those errors appear when AzCopy checks whether a resource is public. In most cases, you can ignore those instances.
 #### AuthenticationFailed
@@ -85,13 +94,28 @@ In case your VM doesn't or can't have a public IP address, consider using a priv
 
 
 #### AccountIsDisabled
+The specified account is disabled. 
+
 ### 404
 #### ResourceNotFound
+The specified resource doesn't exist.
+
 #### ResourceTypeMismatch
+The specified resource type doesn't match the type of the existing resource.
+
 #### AuthenticationFailed
+ Server failed to authenticate the request. Make sure the value of the Authorization header is formed correctly including the signature.
+
 ### 409
 #### ServerBusy
+- The server is currently unable to receive requests. Please retry your request.
+- Ingress is over the account limit.
+- Egress is over the account limit.
+- Operations per second is over the account limit.
+
 #### ResourceTypeMismatch
+The specified resource type doesn't match the type of the existing resource.
+
 
 ## Proxy-related errors
 
