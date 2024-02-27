@@ -23,17 +23,23 @@ If the exit code is `2-panic`, check that the log file exists. If the file doesn
 
 If the exit code is any other non-zero exit code, it may be an exit code from the system. For example, `OOMKilled`. Check your operating system documentation for special exit codes.
 
-## 403 errors
-
+## Error codes
+### 400
+#### InvalidOperation
+#### MissingRequiredQueryParameter
+#### InvalidHeaderValue
+### 401 
+#### InvalidAuthenticationInfo
+#### NoAuthenticationInformation
+### 403
 It's common to encounter 403 errors. Sometimes they're benign and don't result in a failed transfer. For example, in AzCopy logs, you might see that a `HEAD` request received 403 errors. Those errors appear when AzCopy checks whether a resource is public. In most cases, you can ignore those instances.
-
-In some cases, 403 errors can result in a failed transfer. If this happens, other attempts to transfer files will likely fail until you resolve the issue. 403 errors can occur as a result of authentication and authorization issues. They can also occur when requests are blocked due to the storage account firewall configuration.
-
-### Authentication/Authorization issues
+#### AuthenticationFailed
+In some cases, 403 errors can result in a failed transfer. If this happens, other attempts to transfer files will likely fail until you resolve the issue. 403 errors can occur as a result of authentication and authorization issues. They can 
+also occur when requests are blocked due to the storage account firewall configuration.
 
 403 errors that prevent data transfer occur because of issues with SAS tokens, role-based access control (Azure RBAC) roles, and access control list (ACL) configurations.
 
-#### SAS tokens
+##### SAS tokens
 
 If you're using a shared access signature (SAS) token, verify the following:
 
@@ -43,13 +49,13 @@ If you're using a shared access signature (SAS) token, verify the following:
 
 - You generated the token by using an official SDK or tool. Try Storage Explorer if you haven't already.
 
-#### Azure RBAC
+##### Azure RBAC
 
 If you're using Azure RBAC roles via the `azcopy login` command, verify that you have the appropriate Azure roles assigned to your identity (for example, the Storage Blob Data Contributor role).
 
 To learn more about Azure roles, see [Assign an Azure role for access to blob data](/azure/storage/blobs/assign-azure-role-data-access).
 
-#### ACLs
+##### ACLs
 
 If you're using access control lists (ACLs), verify that your identity appears in an ACL entry for each file or directory you intend to access. Also, make sure that each ACL entry reflects the appropriate permission level.
 
@@ -57,15 +63,15 @@ To learn more about ACLs and ACL entries, see [Access control lists (ACLs) in Az
 
 To learn more about how to incorporate Azure roles together with ACLs and how the system evaluates them to make authorization decisions, see [Access control model in Azure Data Lake Storage Gen2](/azure/storage/blobs/data-lake-storage-access-control-model).
 
-### Firewall and private endpoint issues
+##### Firewall and private endpoint issues
 
 If the storage firewall configuration isn't configured to allow access from the machine where AzCopy is running, AzCopy operations will return an HTTP 403 error.
 
-#### Transfer data from or to a local machine
+##### Transfer data from or to a local machine
 
 If you're uploading or downloading data between a storage account and an on-premises machine, make sure that the machine that runs AzCopy is able to access either the source or destination storage account. You might have to use IP network rules in the firewall settings of either the source or destination accounts to allow access from the public IP address of the machine.
 
-#### Transfer data between storage accounts
+##### Transfer data between storage accounts
 
 403 authorization errors can prevent you from transferring data between accounts by using the client machine where AzCopy is running.
 
@@ -73,9 +79,19 @@ If you're copying data between storage accounts, make sure that the machine that
 
 In case your VM doesn't or can't have a public IP address, consider using a private endpoint. See [Use private endpoints for Azure Storage](/azure/storage/common/storage-private-endpoints).
 
-#### Use Private Link
+##### Use Private Link
 
 [Private Link](/azure/private-link/private-link-overview) is at the virtual network (VNet)/subnet level. If you want AzCopy requests to go through Private Link, then AzCopy must make those requests from a VM running in that VNet/subnet. For example, if you configure Private Link in VNet1/Subnet1 but the VM on which AzCopy runs is in VNet1/Subnet2, AzCopy requests won't use Private Link, and they're expected to fail.
+
+
+#### AccountIsDisabled
+### 404
+#### ResourceNotFound
+#### ResourceTypeMismatch
+#### AuthenticationFailed
+### 409
+#### ServerBusy
+#### ResourceTypeMismatch
 
 ## Proxy-related errors
 
