@@ -100,12 +100,6 @@ The specified account is disabled.
 #### ResourceNotFound
 The specified resource doesn't exist.
 
-#### ResourceTypeMismatch
-The specified resource type doesn't match the type of the existing resource.
-
-#### AuthenticationFailed
- Server failed to authenticate the request. Make sure the value of the Authorization header is formed correctly including the signature.
-
 ### 409
 #### ServerBusy
 - The server is currently unable to receive requests. Please retry your request.
